@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Telas/telaUser.png</file>
+        <file>Telas/espera.bmp</file>
+        <file>Telas/func.bmp</file>
+        <file>Telas/black.bmp</file>
+        <file>Telas/calendario.bmp</file>
+        <file>Telas/editHoras.bmp</file>
+        <file>Telas/Menu.bmp</file>
+        <file>Telas/SerialNumber.bmp</file>
+        <file>Telas/TelaConfig.bmp</file>
+        <file>Telas/19_principal.bmp</file>
+        <file>Telas/senha.bmp</file>
+    </qresource>
+</RCC>
