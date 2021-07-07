@@ -110,18 +110,25 @@ public slots:
     QList<int> readBytesCam();
     void atualizaHoras(void);
     void atualizaMed(void);
+    void funcPai(void);
+    void espMae(void);
 private:
       QSerialPort *port;
       bool serialInsufla;
        QTimer *tPressao;
        QTimer *tHoras;
+       QTimer *func;
+       QTimer *esp;
         int setPressao;
-QByteArray buf ;
+        QString porta;
+
+    uint8_t bytesUsb[15];
+    uint8_t pontUsb,final;
 
  int usb[20] ;
  QByteArray  *out_;
         int dia,mes,ano,hora,minuto,dia_,mes_,ano_,hora_,minuto_;
-         int sens1_= 0,sens2_= 0,sens3_= 0,sens4_= 0,tempoDormindo=0,tempoAcordado=0;
+         int sens1_= 0,sens2_= 0,sens3_= 0,sens4_= 0,tempoDormindo=0,tempoAcordado=0,i;
 };
 
 #endif // SERIAL_H

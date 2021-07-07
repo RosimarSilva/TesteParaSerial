@@ -568,8 +568,8 @@ Item {
 
         Text {
             id: day1
-            x: 34
-            y: 159
+            x: 28
+            y: 168
             width: 39
             height: 29
             color: "#9ebd79"

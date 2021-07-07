@@ -65,10 +65,10 @@ Item {
             id: sens_t
             x: 62
             y: 262
-            width: 223
+            width: 270
             height: 22
             color: "#a4e43c"
-            text: "Sensor temperatura"
+            text: "Sensor Temperatura"
             font.pixelSize: 30
             styleColor: "#97e465"
             elide: Text.ElideMiddle
@@ -91,27 +91,29 @@ Item {
 
         Text {
             id: resultS2
-            x: 316
+            x: 299
             y: 109
-            width: 60
+            width: 77
             height: 22
             color: "#a4e43c"
             text:+dif2
             styleColor: "#97e465"
             font.pixelSize: 30
+            horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideMiddle
             font.family: "Courier"
         }
 
         Text {
             id: resultSPressao
-            x: 309
+            x: 286
             y: 180
-            width: 67
+            width: 90
             height: 22
             color: "#a4e43c"
             text:+press
             font.pixelSize: 30
+            horizontalAlignment: Text.AlignHCenter
             styleColor: "#97e465"
             elide: Text.ElideMiddle
             font.family: "Courier"
@@ -119,14 +121,15 @@ Item {
 
         Text {
             id: resultSTemp
-            x: 309
+            x: 338
             y: 262
-            width: 67
+            width: 80
             height: 22
             color: "#a4e43c"
             text: +temp
             styleColor: "#97e465"
             font.pixelSize: 30
+            horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideMiddle
             font.family: "Courier"
         }
@@ -147,7 +150,7 @@ Item {
 
         Text {
             id: dia
-            x: 372
+            x: 387
             y: 11
             width: 35
             height: 22
@@ -162,7 +165,7 @@ Item {
 
         Text {
             id: mes
-            x: 414
+            x: 440
             y: 11
             width: 29
             height: 22
@@ -177,7 +180,7 @@ Item {
 
         Text {
             id: ano
-            x: 460
+            x: 488
             y: 11
             width: 63
             height: 22
@@ -192,7 +195,7 @@ Item {
 
         Text {
             id: hora
-            x: 555
+            x: 615
             y: 11
             width: 30
             height: 22
@@ -207,7 +210,7 @@ Item {
 
         Text {
             id: minuto
-            x: 599
+            x: 653
             y: 11
             width: 33
             height: 22
@@ -225,8 +228,7 @@ Item {
         Connections{  //enquanto não há white balance feito fica piscando
               target:initial
               onDiaChanged:{
-
-                 dia_ = initial.myDia;
+                  dia_ = initial.myDia;
               }
         }
 
@@ -256,7 +258,6 @@ Item {
         Connections{  //enquanto não há white balance feito fica piscando
               target:initial
               onMinutoChanged:{
-                //  console.log("chama")
                  minuto_ = initial.myMinuto;
 
               }
@@ -265,7 +266,6 @@ Item {
         Connections{  //enquanto não há white balance feito fica piscando
               target:initial
               onSens1Changed:{
-                //  console.log("chama")
                  dif1 = initial.sens1;
 
               }
@@ -498,7 +498,50 @@ Item {
             Connections{  //enquanto não há white balance feito fica piscando
                 target:initial
                 onFuncChanged:{
-                   func.state =  "Funcionamento";
+                    func.state =  "Funcionamento";
+                }
+            }
+
+            Text {
+                id: pin1
+                x: 440
+                y: 235
+                width: 66
+                height: 27
+                color: "#71d82b"
+                text: qsTr("Pino53")
+                lineHeight: 0.8
+                font.pixelSize: 20
+                MouseArea {
+                    anchors.fill: parent
+                    onPressed: {parent.scale = 0.95}
+                    onReleased:
+                    {
+                        parent.scale = 1.0;
+                        initial.setLed(8);
+                    }
+
+                }
+            }
+
+            Text {
+                id: pin2
+                x: 575
+                y: 235
+                width: 66
+                height: 27
+                color: "#71d82b"
+                text: qsTr("Pino54")
+                lineHeight: 0.8
+                font.pixelSize: 20
+                MouseArea {
+                    anchors.fill: parent
+                    onPressed: {parent.scale = 0.95}
+                    onReleased:
+                    {
+                        parent.scale = 1.0;
+                        initial.setLed(9);
+                    }
 
                 }
             }

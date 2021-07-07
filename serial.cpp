@@ -6,6 +6,9 @@ Serial::Serial(QObject *parent) : QObject(parent)
      tPressao = new QTimer();
      tHoras = new QTimer();
      out_ = new QByteArray();
+
+     func = new QTimer;
+        esp = new QTimer;
     this->findSerial();
   //  this->openSerialIsuflador();
     this->initSerialInsufla();
@@ -14,6 +17,9 @@ Serial::Serial(QObject *parent) : QObject(parent)
      connect(tHoras,&QTimer::timeout,this,&Serial::atualizaHoras);
       connect(tPressao,&QTimer::timeout,this,&Serial::atualizaMed);
        connect(port,SIGNAL(readyRead()),this,SLOT(readBytesCam()));
+
+       connect(func,&QTimer::timeout,this,&Serial::funcPai);
+        connect(esp,&QTimer::timeout,this,&Serial::espMae);
 
 
 }
@@ -42,6 +48,10 @@ void Serial::findSerial()
         description = serialPortInfo.description();
         manufacturer = serialPortInfo.manufacturer();
         serialNumber = serialPortInfo.serialNumber();
+        if(manufacturer == "FTDI")
+        {
+            porta = serialPortInfo.systemLocation();
+        }
 
         qDebug() << "Port: " << serialPortInfo.portName();
         qDebug() << "Location: " << serialPortInfo.systemLocation();
@@ -57,7 +67,7 @@ void Serial::findSerial()
 bool Serial::openSerialIsuflador()
 {
     port->close();
-    port->setPortName("COM27");
+    port->setPortName(porta);
     serialInsufla = port->open(QIODevice::ReadWrite);
 
    if(serialInsufla)  qDebug("serial do insuflador abriu");
@@ -70,8 +80,8 @@ bool Serial::initSerialInsufla()
 {
     if(!openSerialIsuflador()) return 0;
 
-     port->setPortName("COM27");
-     port->setBaudRate(QSerialPort::Baud9600);
+     port->setPortName(porta);
+     port->setBaudRate(QSerialPort::Baud1200);
      port->setDataBits(QSerialPort::Data8);
      port->setParity(QSerialPort::NoParity);
      port->setStopBits(QSerialPort::OneStop);
@@ -316,69 +326,72 @@ int Serial::tempAcord()
 
 QList<int> Serial::readBytesCam()
 {
-    uint8_t luis,i;
     QList<int> *l = new QList<int>();
-
-  //  qDebug("recebemos algo do insuflador");
-   while(port->waitForReadyRead(100)) // aguarda um tempo para receber a resposta
+    QByteArray buf ;
+    uint8_t luis;
+   // qDebug("recebemos algo do insuflador");
+ while(port->waitForReadyRead(10)) // aguarda um tempo para receber a resposta
         {
             if (port->bytesAvailable())
             {
-             //  qDebug("recebemos dados do insuflador");
                 buf.append(port->readAll());
                 for (int i=0; i<buf.size(); i++){l->append(buf.at(i));
 
                     luis = buf[i];
-                    qDebug()<< luis;
+                     pontUsb ++;
+                    bytesUsb[pontUsb] = luis;
+
+                    if(pontUsb == 3)
+                    {
+                        final = bytesUsb[3];
+                    }
+
+                    if(pontUsb == final)
+                    {
+                        pontUsb = 0;
+                        if((bytesUsb[1] == 84) && (bytesUsb[2] == 37)&& (bytesUsb[4] == 06))
+                         {
+                            dia_ =  bytesUsb[5];
+                            mes_ =  bytesUsb[6];
+                            ano_ = bytesUsb[7];
+                            hora_ =  bytesUsb[8];
+                            minuto_ = bytesUsb[9];
+
+                              tHoras->start(50);
+                        }
+
+                        if(((bytesUsb[1] == 0x54) && (bytesUsb[2] == 0x25) && (bytesUsb[4] == 0x03)))
+                         {
+                            if(bytesUsb[5] == 0x01) func->start(50);
+                            else  esp->start(50);
+                         }
+
+                        if(((bytesUsb[1] == 0x54) && (bytesUsb[2] == 0x25) && (bytesUsb[4] == 0x04)))
+                          {
+                             sens1_ = (bytesUsb[5]*256) + bytesUsb[6];
+                             sens2_ = (bytesUsb[7]*256) + bytesUsb[8];
+                               sens3_ = (bytesUsb[9]*256) + bytesUsb[10];
+                                 sens4_ = (bytesUsb[11]*256) + bytesUsb[12];
+
+
+                             tPressao->start(50);
+
+                          }
+
+                        for(uint8_t j= 0; j<=15;++j)bytesUsb[j];
+
+                    }
                 }
+            }
 
-              }
-           //  qDebug()<< usb[4];
         }
-
-
-
-  if(buf[0] == 84 && buf[1] == 37)
-   {
-      dia_ =  buf[4];
-      mes_ =  buf[5];
-      ano_ = buf[6];
-      hora_ =  buf[7];
-      minuto_ = buf[8];
-
-    //  this->setAno(buf[6]);
-    //   this->setMes(buf[5]);
-    //   this->setDia_(buf[4]);
-      // this->setHora(buf[7]);
-      // this->setMinuto(buf[8]);
-    //  qDebug("chamamos o pai de rei");
-
-        tHoras->start(50);
-
-   }
-
-  if(buf[0] == 84 && buf[1] == 37 && buf[3] == 0x03)
-   {
-      if(buf[4] == 1) emit funcChanged();
-      else emit esperaChanged();
-
-    //  this->setAno(buf[6]);
-    //   this->setMes(buf[5]);
-    //   this->setDia_(buf[4]);
-      // this->setHora(buf[7]);
-      // this->setMinuto(buf[8]);
-    //  qDebug("chamamos o pai de rei");
-
-        tHoras->start(50);
-
-   }
 
  if((buf[0] == 0x24)&&(buf[1] == 0x25))
    {
-      sens1_ = (buf[2]*256) + buf[3];
-        sens2_ = (buf[4]*256) + buf[5];
-          sens3_ = (buf[6]*256) + buf[7];
-            sens4_ = (buf[8]*256) + buf[9];
+      sens1_ = (bytesUsb[2]*256) + bytesUsb[3];
+        sens2_ = (bytesUsb[4]*256) + bytesUsb[5];
+          sens3_ = (bytesUsb[6]*256) + bytesUsb[7];
+            sens4_ = (bytesUsb[8]*256) + bytesUsb[9];
              tPressao->start(50);
 
    }
@@ -413,5 +426,17 @@ void Serial::atualizaMed()
      this->setSens3(sens3_);
      this->setSens4(sens4_);
 
+}
+
+void Serial::funcPai()
+{
+    func->stop();
+    emit funcChanged();
+}
+
+void Serial::espMae()
+{
+    esp->stop();
+     emit esperaChanged();
 }
 
