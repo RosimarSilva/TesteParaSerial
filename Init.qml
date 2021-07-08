@@ -3,6 +3,7 @@ import QtQuick 2.0
 Item {
     id: chama
     property int temp: 45
+     property int lvdt: 45
     property int press: 12
     property int flux: 24
     property int dif1: 67
@@ -19,6 +20,7 @@ Item {
         y: 30
         source: "Telas/black.bmp"
 
+        //Titulos dos sensores
         Text {
             id: sens_1
             x: 62
@@ -36,11 +38,11 @@ Item {
         Text {
             id: sens_2
             x: 62
-            y: 109
+            y: 94
             width: 209
             height: 22
             color: "#a4e43c"
-            text: "Sensor Fluxo"
+            text: "Sensor Desloc"
             font.pixelSize: 30
             styleColor: "#97e465"
             elide: Text.ElideMiddle
@@ -50,7 +52,7 @@ Item {
         Text {
             id: sens_p
             x: 62
-            y: 180
+            y: 158
             width: 218
             height: 22
             color: "#a4e43c"
@@ -75,15 +77,18 @@ Item {
             font.family: "Courier"
         }
 
+        //Resultados dos sensores
+
         Text {
             id: resultS1
             x: 347
             y: 39
-            width: 60
+            width: 103
             height: 22
             color: "#a4e43c"
             text: +dif1
             font.pixelSize: 30
+            horizontalAlignment: Text.AlignHCenter
             styleColor: "#97e465"
             elide: Text.ElideMiddle
             font.family: "Courier"
@@ -91,8 +96,8 @@ Item {
 
         Text {
             id: resultS2
-            x: 299
-            y: 109
+            x: 293
+            y: 94
             width: 77
             height: 22
             color: "#a4e43c"
@@ -106,8 +111,8 @@ Item {
 
         Text {
             id: resultSPressao
-            x: 286
-            y: 180
+            x: 293
+            y: 158
             width: 90
             height: 22
             color: "#a4e43c"
@@ -147,6 +152,8 @@ Item {
             elide: Text.ElideMiddle
             font.family: "Courier"
         }
+
+        // Data e Hora exibidos na tela principal
 
         Text {
             id: dia
@@ -223,23 +230,22 @@ Item {
             font.family: "Courier"
         }
 
-
-        //recebe do c++ onumeros de horas da lampada
-        Connections{  //enquanto não há white balance feito fica piscando
+            // recebe do c++ os valores da data e hora
+         Connections{
               target:initial
               onDiaChanged:{
                   dia_ = initial.myDia;
               }
         }
 
-        Connections{  //enquanto não há white balance feito fica piscando
+        Connections{
               target:initial
               onMesChanged:{
                  mes_ = initial.myMes;
               }
         }
 
-        Connections{  //enquanto não há white balance feito fica piscando
+        Connections{
               target:initial
               onAnoChanged:{
 
@@ -248,14 +254,14 @@ Item {
               }
         }
 
-        Connections{  //enquanto não há white balance feito fica piscando
+        Connections{
               target:initial
               onHoraChanged:{
                  hora_ = initial.myHora;
               }
         }
 
-        Connections{  //enquanto não há white balance feito fica piscando
+        Connections{
               target:initial
               onMinutoChanged:{
                  minuto_ = initial.myMinuto;
@@ -263,21 +269,21 @@ Item {
               }
         }
 
-        Connections{  //enquanto não há white balance feito fica piscando
+        Connections{
               target:initial
               onSens1Changed:{
                  dif1 = initial.sens1;
 
               }
         }
-        Connections{  //enquanto não há white balance feito fica piscando
+        Connections{
               target:initial
               onSens2Changed:{
                  dif2 = initial.sens2;
 
               }
         }
-        Connections{  //enquanto não há white balance feito fica piscando
+        Connections{
               target:initial
               onSens3Changed:{
                 //  console.log("chama")
@@ -285,14 +291,22 @@ Item {
 
               }
         }
-        Connections{  //enquanto não há white balance feito fica piscando
+        Connections{
             target:initial
             onSens4Changed:{
                 temp = initial.sens4;
 
             }
         }
+        Connections{
+            target:initial
+            onSens5Changed:{
+                lvdt = initial.sens5;
 
+            }
+        }
+
+        // Titulos e botões  dos acionamentos dos Leds
         Text {
             id: led1
             x: 440
@@ -419,6 +433,7 @@ Item {
             }
         }
 
+            //Titulo e botão  de solicitação de cominucação manual
         Text {
             id: text1
             x: 151
@@ -434,13 +449,14 @@ Item {
                 onReleased:
                 {
                     parent.scale = 1.0;
-                    initial.initSerail();
+                    initial.initSerail();// envia parao c++
 
                 }
 
             }
         }
 
+        //Muda de tela seta
         Text {
             id: go
             x: 603
@@ -461,6 +477,7 @@ Item {
             }
         }
 
+        //Estrutura de mudanças de tela
         Image {
             id: func
             x: 211
@@ -474,7 +491,7 @@ Item {
                       name: "Espera"
                   }
              ]
-                // imagens das figuras da porcentagem, do led
+
                  Image {
                      id: func1
                      source: "Telas/func.bmp"
@@ -487,7 +504,8 @@ Item {
                   }
         }
 
-        Connections{  //enquanto não há white balance feito fica piscando
+        //Recebe do c++ para mudança de estado de funcionamento
+        Connections{
             target:initial
             onEsperaChanged:{
                func.state = "Espera";
@@ -501,49 +519,34 @@ Item {
                     func.state =  "Funcionamento";
                 }
             }
-
+//Titulo do sensor lvdt
             Text {
-                id: pin1
-                x: 440
-                y: 235
-                width: 66
-                height: 27
-                color: "#71d82b"
-                text: qsTr("Pino53")
-                lineHeight: 0.8
-                font.pixelSize: 20
-                MouseArea {
-                    anchors.fill: parent
-                    onPressed: {parent.scale = 0.95}
-                    onReleased:
-                    {
-                        parent.scale = 1.0;
-                        initial.setLed(8);
-                    }
-
-                }
+                id: sens_lvdt
+                x: 62
+                y: 213
+                width: 218
+                height: 22
+                color: "#a4e43c"
+                text: "Sensor LVDT"
+                elide: Text.ElideMiddle
+                font.pixelSize: 30
+                font.family: "Courier"
+                styleColor: "#97e465"
             }
-
+//Resultado do sensor lvdt
             Text {
-                id: pin2
-                x: 575
-                y: 235
-                width: 66
-                height: 27
-                color: "#71d82b"
-                text: qsTr("Pino54")
-                lineHeight: 0.8
-                font.pixelSize: 20
-                MouseArea {
-                    anchors.fill: parent
-                    onPressed: {parent.scale = 0.95}
-                    onReleased:
-                    {
-                        parent.scale = 1.0;
-                        initial.setLed(9);
-                    }
-
-                }
+                id: resultLvdt
+                x: 293
+                y: 213
+                width: 90
+                height: 22
+                color: "#a4e43c"
+                text: +lvdt
+                elide: Text.ElideMiddle
+                font.pixelSize: 30
+                horizontalAlignment: Text.AlignHCenter
+                font.family: "Courier"
+                styleColor: "#97e465"
             }
 
 

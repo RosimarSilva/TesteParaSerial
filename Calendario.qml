@@ -14,7 +14,7 @@ Item {
         x: 0
         y: 30
         source: "Telas/black.bmp"
-
+    //Texto principal da tela do calendario
         Text {
             id: identiTela
             x: 201
@@ -25,7 +25,7 @@ Item {
             text: qsTr("Ajuste de Data e Hora")
             font.pixelSize: 25
         }
-
+    // textos dia mes ano ...
         Text {
             id: tiuloData
             x: 22
@@ -36,7 +36,7 @@ Item {
             text: qsTr("  Dia           Mes             Ano             Hora           minuto")
             font.pixelSize: 25
         }
-
+    // Botão '-' do dia
         Text {
             id: minDia
             x: 13
@@ -57,7 +57,7 @@ Item {
 
             }
         }
-
+// Botão '+' do dia
         Text {
             id: maiDia
             x: 69
@@ -81,7 +81,7 @@ Item {
 
             }
         }
-
+// Botão '+' do Mes
         Text {
             id: maiMes
             x: 201
@@ -105,7 +105,7 @@ Item {
 
             }
         }
-
+// Botão '+' do Ano
         Text {
             id: maiAno
             x: 348
@@ -129,7 +129,7 @@ Item {
 
             }
         }
-
+        // Botão '+' do Hora
         Text {
             id: maiHora
             x: 499
@@ -153,7 +153,7 @@ Item {
 
             }
         }
-
+        // Botão '+' do minuto
         Text {
             id: maiMin
             x: 649
@@ -177,7 +177,7 @@ Item {
 
             }
         }
-
+// Botão '-' do mes
      Text {
             id: minMes
             x: 151
@@ -199,7 +199,7 @@ Item {
 
             }
         }
-
+// Botão '-' do ano
         Text {
             id: minAno
             x: 289
@@ -221,7 +221,7 @@ Item {
 
             }
         }
-
+// Botão '-' da hora
         Text {
             id: minHora
             x: 440
@@ -244,7 +244,7 @@ Item {
 
             }
         }
-
+// Botão '-' do minuto
         Text {
             id: minMin
             x: 593
@@ -268,7 +268,7 @@ Item {
 
             }
         }
-
+    //Valor mostrado do mes
         Text {
             id: month
             x: 163
@@ -281,7 +281,7 @@ Item {
             horizontalAlignment: Text.AlignHCenter
 
         }
-
+ //Valor mostrado do ano
         Text {
             id: year
             x: 304
@@ -294,7 +294,7 @@ Item {
             horizontalAlignment: Text.AlignHCenter
 
         }
-
+ //Valor mostrado da hora
         Text {
             id: hour
             x: 455
@@ -307,7 +307,7 @@ Item {
             horizontalAlignment: Text.AlignHCenter
 
         }
-
+ //Valor mostrado do minuto
         Text {
             id: minute
             x: 608
@@ -321,7 +321,7 @@ Item {
 
 
         }
-
+ //Texto ajuste do alrme
         Text {
             id: identiTela1
             x: 13
@@ -333,7 +333,7 @@ Item {
             font.pixelSize: 25
 
         }
-
+ //botão de confirm o alarme
         Text {
             id: alrmOk
             x: 255
@@ -358,7 +358,7 @@ Item {
 
             }
         }
-
+//botão de confirma da Hora
         Text {
             id: alrmOk1
             x: 255
@@ -384,7 +384,7 @@ Item {
 
             }
         }
-
+// Seta Voltar
         Text {
             id: voltar
             x: 27
@@ -404,7 +404,7 @@ Item {
 
             }
         }
-
+// Textominutos dormindo
         Text {
             id: miindor
             x: 40
@@ -413,7 +413,7 @@ Item {
             text: qsTr("Minutos Dormindo")
             font.pixelSize: 20
         }
-
+// Texto minutos Acordado
         Text {
             id: miindor1
             x: 465
@@ -424,7 +424,7 @@ Item {
         }
 
 
-
+// Botão do mais + Dormindo
         Text {
             id: maiDorB
             x: 156
@@ -450,7 +450,7 @@ Item {
 
             }
         }
-
+// Botão do Menos - Dormindo
         Text {
             id: minDorb
             x: 57
@@ -474,7 +474,7 @@ Item {
             }
         }
 
-
+// Botão do mais Acordado
         Text {
             id: maiAcorB
             x: 575
@@ -500,7 +500,7 @@ Item {
 
             }
         }
-
+// Botão do menos Acordado
         Text {
             id: minAcorB
             x: 473
@@ -528,46 +528,49 @@ Item {
             }
         }
 
-        //recebe do c++ onumeros de horas da lampada
-        Connections{  //enquanto não há white balance feito fica piscando
+        //recebe do c++ os valores a ser mostradona tela
+
+        Connections{
               target:initial
               onDiaChanged:{
-                 dia_ = initial.myDia;
+                 dia_ = initial.myDia;  // Dia
               }
         }
 
-        Connections{  //enquanto não há white balance feito fica piscando
+        Connections{
               target:initial
               onMesChanged:{
-                 mes_ = initial.myMes;
+                 mes_ = initial.myMes; //Mês
               }
         }
 
-        Connections{  //enquanto não há white balance feito fica piscando
+        Connections{
               target:initial
               onAnoChanged:{
 
-                 ano_ = initial.myAno ;
+                 ano_ = initial.myAno ;//Ano
               }
         }
 
-        Connections{  //enquanto não há white balance feito fica piscando
+        Connections{
               target:initial
               onHoraChanged:{
-                 hora_ = initial.myHora;
+                 hora_ = initial.myHora; //Hora
               }
         }
 
-        Connections{  //enquanto não há white balance feito fica piscando
+        Connections{
             target:initial
             onMinutoChanged:{
-                minuto_ = initial.myMinuto;
+                minuto_ = initial.myMinuto;//Minuto
 
             }
         }
 
+        //Escreve nos campos as datas e horas
+
         Text {
-            id: day1
+            id: day1  //Dia
             x: 28
             y: 168
             width: 39
@@ -578,6 +581,7 @@ Item {
             font.pixelSize: 25
         }
 
+            //minutos dormindo
         Text {
             id: minDor
             x: 89
@@ -589,7 +593,7 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 29
         }
-
+        //Minutos acordado
         Text {
             id: mainDor1
             x: 514
@@ -602,18 +606,18 @@ Item {
             font.pixelSize: 29
         }
 
-        Connections{  //enquanto não há white balance feito fica piscando
+        //Recebe do c++ os valores do tempos de funcionamento
+        Connections{
               target:initial
               onTempAcordachanged:{
-                 acorda = initial.tempAcord;
+                 acorda = initial.tempAcord; //Acordado
               }
         }
 
-        Connections{  //enquanto não há white balance feito fica piscando
+        Connections{
             target:initial
             onTempDormichanged:{
-                //  console.log("chama")
-               dorme = initial.tempDorm;
+               dorme = initial.tempDorm;//Dormindo
 
             }
         }

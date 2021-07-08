@@ -17,6 +17,8 @@
 class Serial: public QObject
 {
     Q_OBJECT
+
+    //Estas faz as leituras do c++ e manda para o QML exibir na tela
     Q_PROPERTY(int myDia READ myDia WRITE setDia NOTIFY diaChanged);
     Q_PROPERTY(int myMes READ myMes WRITE setMes NOTIFY mesChanged);
     Q_PROPERTY(int myAno READ myAno WRITE setAno NOTIFY anoChanged);
@@ -24,9 +26,11 @@ class Serial: public QObject
     Q_PROPERTY(int myMinuto READ myMinuto WRITE setMinuto NOTIFY minutoChanged());
 
     Q_PROPERTY(int sens1 READ sens1 WRITE setSens1 NOTIFY sens1Changed);
-     Q_PROPERTY(int sens2 READ sens2 WRITE setSens2 NOTIFY sens2Changed);
-     Q_PROPERTY(int sens3 READ sens3 WRITE setSens3 NOTIFY sens3Changed);
-     Q_PROPERTY(int sens4 READ sens4 WRITE setSens4 NOTIFY sens4Changed);
+    Q_PROPERTY(int sens2 READ sens2 WRITE setSens2 NOTIFY sens2Changed);
+    Q_PROPERTY(int sens3 READ sens3 WRITE setSens3 NOTIFY sens3Changed);
+    Q_PROPERTY(int sens4 READ sens4 WRITE setSens4 NOTIFY sens4Changed);
+    Q_PROPERTY(int sens5 READ sens5 WRITE setSens5 NOTIFY sens5Changed);
+
     Q_PROPERTY(int tempDorm READ tempDorm WRITE setTemDorm NOTIFY tempDormichanged);
     Q_PROPERTY(int tempAcord READ tempAcord WRITE setTempAcor NOTIFY tempAcordachanged);
 
@@ -45,6 +49,8 @@ public:
     void enviaPressao();
     void escreveserialCam(int com);
 
+    //Estas Rotinas com essa palavra "Q_INVOKABLE" faz a interação do QML com o c++
+
     Q_INVOKABLE void setDia(const int value);
     Q_INVOKABLE void setMes(const int value);
     Q_INVOKABLE void setAno(const int value);
@@ -58,14 +64,15 @@ public:
     Q_INVOKABLE void setSens2( int value);
     Q_INVOKABLE void setSens3( int value);
     Q_INVOKABLE void setSens4( int value);
+    Q_INVOKABLE void setSens5( int value);
 
 
      Q_INVOKABLE void setLed(int comand);
      Q_INVOKABLE void initSerail(void);
 
-      Q_INVOKABLE void setTemDorm(const char sinal);
-      Q_INVOKABLE void setTempAcor(const char sinal);
-       Q_INVOKABLE void alarmeOk(void);
+     Q_INVOKABLE void setTemDorm(const char sinal);
+     Q_INVOKABLE void setTempAcor(const char sinal);
+     Q_INVOKABLE void alarmeOk(void);
 
      Q_INVOKABLE void setEspera(int c);
      Q_INVOKABLE void setFunciona(int c);
@@ -82,6 +89,7 @@ public:
     int sens3(void);
     int sens4(void);
     int sens2(void);
+    int sens5(void);
 
     int tempDorm(void);
     int tempAcord(void);
@@ -96,15 +104,15 @@ signals:
     void horaChanged(void);
     void minutoChanged(void);
     void sens1Changed(void);
-     void sens2Changed(void);
-      void sens3Changed(void);
-       void sens4Changed(void);
-       void sens5Changed(void);
-       void tempDormichanged(void);
-       void tempAcordachanged(void);
+    void sens2Changed(void);
+    void sens3Changed(void);
+    void sens4Changed(void);
+    void sens5Changed(void);
+    void tempDormichanged(void);
+    void tempAcordachanged(void);
 
-       void esperaChanged(void);
-       void funcChanged(void);
+    void esperaChanged(void);
+    void funcChanged(void);
 
 public slots:
     QList<int> readBytesCam();
@@ -115,20 +123,20 @@ public slots:
 private:
       QSerialPort *port;
       bool serialInsufla;
-       QTimer *tPressao;
-       QTimer *tHoras;
-       QTimer *func;
-       QTimer *esp;
-        int setPressao;
-        QString porta;
+      QTimer *tPressao;
+      QTimer *tHoras;
+      QTimer *func;
+      QTimer *esp;
+      int setPressao;
+      QString porta;
 
-    uint8_t bytesUsb[15];
-    uint8_t pontUsb,final;
+      uint8_t bytesUsb[15];
+      uint8_t pontUsb,final;
 
- int usb[20] ;
- QByteArray  *out_;
-        int dia,mes,ano,hora,minuto,dia_,mes_,ano_,hora_,minuto_;
-         int sens1_= 0,sens2_= 0,sens3_= 0,sens4_= 0,tempoDormindo=0,tempoAcordado=0,i;
+     int usb[20] ;
+     QByteArray  *out_;
+     int dia,mes,ano,hora,minuto,dia_,mes_,ano_,hora_,minuto_;
+     int sens1_= 0,sens2_= 0,sens3_= 0,sens4_= 0,sens5_= 0,tempoDormindo=0,tempoAcordado=0,i;
 };
 
 #endif // SERIAL_H
